@@ -7,6 +7,7 @@ Raspberry Pi Pico W で電子部品を動かすためのコードと手順。部
 | 部品 | プロジェクト |
 |---|---|
 | [st7735](st7735/)：1.8 インチ TFT 液晶 | [project1](st7735/project1/)：表示デモ<br>[project2](st7735/project2/)：PC 画面のミラー表示 |
+| [lcd1602](lcd1602/)：I2C 接続の 16 文字 × 2 行の液晶 | [project1](lcd1602/project1/)：Wi-Fi で時刻を合わせる時計<br>[project2](lcd1602/project2/)：OpenWeatherMap の天気表示 |
 
 初めての場合は、このページの「[Pico W の準備](#pico-w-の準備)」を済ませてから、部品のディレクトリの README で配線し、プロジェクトの README の手順で動かす。
 
@@ -18,13 +19,14 @@ README は階層ごとに役割を分けている。
 picow/
 ├── README.md          # Pico W 共通の準備（このファイル）
 ├── images/            # このファイルの図
-└── st7735/
-    ├── README.md      # ST7735 液晶の部品と配線
-    ├── images/        # 配線図
-    ├── project1/      # 表示デモ
-    │   └── README.md  # プロジェクトの使い方
-    └── project2/      # PC 画面のミラー表示
-        └── README.md
+├── st7735/
+│   ├── README.md      # ST7735 液晶の部品と配線
+│   ├── images/        # 配線図
+│   ├── project1/      # 表示デモ
+│   │   └── README.md  # プロジェクトの使い方
+│   └── project2/      # PC 画面のミラー表示
+│       └── README.md
+└── lcd1602/           # I2C LCD1602 液晶（構成は st7735/ と同じ）
 ```
 
 ## Pico W の準備
