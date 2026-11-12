@@ -75,35 +75,25 @@ Pico W に保存するには、「ファイル」→「名前を付けて保存�
 
 ## Pico W のピン
 
-![Pico W のピンの物理ピン番号と名前](images/pinout.svg)
+![Raspberry Pi Pico W のピン配置図。各ピンの物理ピン番号、名前、使える機能を示す](images/picow-pinout.svg)
 
-USB 端子を左、部品面を上にすると、物理ピン番号は下側の列が左から 1〜20、上側の列が右から 21〜40 と並ぶ。プログラムでは物理ピン番号ではなく GP の後の番号を使う。例えば、9 番ピン（GP6）は `Pin(6)` と書く。
+図：Raspberry Pi Ltd「Pico W pinout」（[raspberrypi/documentation](https://github.com/raspberrypi/documentation/blob/master/documentation/asciidoc/microcontrollers/pico-series/images/picow-pinout.svg)）、[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。改変していない。
 
-次の表は、USB 側から順に、同じ縦の列に並ぶ下側と上側のピンを並べたものである。
+各ピンの横の灰色の枠の数字が物理ピン番号、色の付いた枠がそのピンで使える機能である。この図は USB 端子が上なので、反時計回りに 90 度回すと、このリポジトリの配線図と同じ向き（USB 端子が左）になる。そのとき、物理ピン番号は下側の列が左から 1〜20、上側の列が右から 21〜40 と並ぶ。
 
-| 下側の番号 | 名前 | 機能 | 上側の番号 | 名前 | 機能 |
-|---|---|---|---|---|---|
-| 1 | GP0 | I2C0 SDA、SPI0 RX | 40 | VBUS | USB から受け取った 5 V |
-| 2 | GP1 | I2C0 SCL、SPI0 CSn | 39 | VSYS | Pico W の電源の入力（1.8〜5.5 V） |
-| 3 | GND | グラウンド（0 V） | 38 | GND | グラウンド（0 V） |
-| 4 | GP2 | I2C1 SDA、SPI0 SCK | 37 | 3V3_EN | GND につなぐと 3.3 V の電源が止まる |
-| 5 | GP3 | I2C1 SCL、SPI0 TX | 36 | 3V3(OUT) | 3.3 V の出力。部品の電源に使う |
-| 6 | GP4 | I2C0 SDA、SPI0 RX | 35 | ADC_VREF | ADC の基準電圧 |
-| 7 | GP5 | I2C0 SCL、SPI0 CSn | 34 | GP28 | I2C0 SDA、SPI1 RX、ADC2 |
-| 8 | GND | グラウンド（0 V） | 33 | AGND | ADC 用のグラウンド |
-| 9 | GP6 | I2C1 SDA、SPI0 SCK | 32 | GP27 | I2C1 SCL、SPI1 TX、ADC1 |
-| 10 | GP7 | I2C1 SCL、SPI0 TX | 31 | GP26 | I2C1 SDA、SPI1 SCK、ADC0 |
-| 11 | GP8 | I2C0 SDA、SPI1 RX | 30 | RUN | GND につなぐと Pico W がリセットされる |
-| 12 | GP9 | I2C0 SCL、SPI1 CSn | 29 | GP22 | I2C1 SDA、SPI0 SCK |
-| 13 | GND | グラウンド（0 V） | 28 | GND | グラウンド（0 V） |
-| 14 | GP10 | I2C1 SDA、SPI1 SCK | 27 | GP21 | I2C0 SCL、SPI0 CSn |
-| 15 | GP11 | I2C1 SCL、SPI1 TX | 26 | GP20 | I2C0 SDA、SPI0 RX |
-| 16 | GP12 | I2C0 SDA、SPI1 RX | 25 | GP19 | I2C1 SCL、SPI0 TX |
-| 17 | GP13 | I2C0 SCL、SPI1 CSn | 24 | GP18 | I2C1 SDA、SPI0 SCK |
-| 18 | GND | グラウンド（0 V） | 23 | GND | グラウンド（0 V） |
-| 19 | GP14 | I2C1 SDA、SPI1 SCK | 22 | GP17 | I2C0 SCL、SPI0 CSn |
-| 20 | GP15 | I2C1 SCL、SPI1 TX | 21 | GP16 | I2C0 SDA、SPI0 RX |
-
-- I2C と SPI は、表の組み合わせのピンでだけ使える。例えば `I2C(1, ...)` の SDA には、「I2C1 SDA」と書いたピン（GP2、GP6、GP10 など）を使う。
+- プログラムでは、物理ピン番号ではなく GP の後の番号を使う。例えば、9 番ピン（GP6）は `Pin(6)` と書く。
+- I2C と SPI は、図の組み合わせのピンでだけ使える。例えば `I2C(1, ...)` の SDA には、図で「I2C1 SDA」とあるピン（GP2、GP6、GP10 など）を使う。
 - SPI の TX は、部品側の SDA（MOSI）につなぐピンである。
-- UART などのほかの機能は、公式のピン配置図（[Pico W Pinout](https://datasheets.raspberrypi.com/picow/PicoW-A4-Pinout.pdf)）にある。各ピンの役割の説明は、キットの解説の [Pico W のページ](https://docs.sunfounder.com/projects/kepler-kit/ja/latest/introduction_to_pico_w.html) にもある。
+
+GP の付かないピンの役割は次のとおり。各ピンの説明は、キットの解説の [Pico W のページ](https://docs.sunfounder.com/projects/kepler-kit/ja/latest/introduction_to_pico_w.html) にもある。
+
+| 名前 | 物理ピン番号 | 役割 |
+|---|---|---|
+| VBUS | 40 | USB から受け取った 5 V が出る |
+| VSYS | 39 | Pico W の電源の入力（1.8〜5.5 V）。USB を使わずに電池などで動かすときにつなぐ |
+| 3V3(OUT) | 36 | 3.3 V の出力。部品の電源に使う |
+| 3V3_EN | 37 | GND につなぐと 3.3 V の電源が止まり、Pico W も止まる |
+| ADC_VREF | 35 | ADC（アナログ入力）の基準電圧 |
+| AGND | 33 | ADC 用のグラウンド |
+| RUN | 30 | GND につなぐと Pico W がリセットされる |
+| GND | 3、8、13、18、23、28、38 | グラウンド（0 V）。どれを使ってもよい |
