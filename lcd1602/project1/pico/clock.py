@@ -15,7 +15,7 @@ WIFI_ERRORS = {
     network.STAT_CONNECT_FAIL: "Connect failed",
 }
 
-lcd = LCD(I2C(1, sda=Pin(26), scl=Pin(27), freq=100000))  # 液晶の基板の I2C チップ PCF8574 の上限が 100 kHz のため
+lcd = LCD(I2C(1, sda=Pin(6), scl=Pin(7), freq=100000))  # 液晶の基板の I2C チップ PCF8574 の上限が 100 kHz のため
 
 
 def show(line1, line2):
