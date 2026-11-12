@@ -7,6 +7,7 @@ Raspberry Pi Pico W で電子部品を動かすためのコードと手順。部
 | 部品 | プロジェクト |
 |---|---|
 | [st7735](st7735/)：1.8 インチ TFT 液晶 | [project1](st7735/project1/)：表示デモ<br>[project2](st7735/project2/)：PC 画面のミラー表示 |
+| [lcd1602](lcd1602/)：I2C 接続の 16 文字 × 2 行の液晶 | [project1](lcd1602/project1/)：Wi-Fi で時刻を合わせる時計<br>[project2](lcd1602/project2/)：OpenWeatherMap の天気表示 |
 
 初めての場合は、このページの「[Pico W の準備](#pico-w-の準備)」を済ませてから、部品のディレクトリの README で配線し、プロジェクトの README の手順で動かす。
 
@@ -18,13 +19,14 @@ README は階層ごとに役割を分けている。
 picow/
 ├── README.md          # Pico W 共通の準備（このファイル）
 ├── images/            # このファイルの図
-└── st7735/
-    ├── README.md      # ST7735 液晶の部品と配線
-    ├── images/        # 配線図
-    ├── project1/      # 表示デモ
-    │   └── README.md  # プロジェクトの使い方
-    └── project2/      # PC 画面のミラー表示
-        └── README.md
+├── st7735/
+│   ├── README.md      # ST7735 液晶の部品と配線
+│   ├── images/        # 配線図
+│   ├── project1/      # 表示デモ
+│   │   └── README.md  # プロジェクトの使い方
+│   └── project2/      # PC 画面のミラー表示
+│       └── README.md
+└── lcd1602/           # I2C LCD1602 液晶（構成は st7735/ と同じ）
 ```
 
 ## Pico W の準備
@@ -64,11 +66,34 @@ Pico W に保存するには、「ファイル」→「名前を付けて保存�
 
 ブレッドボードは、縦に並んだ 5 つの穴が中でつながっている。中央の溝で上下は分かれる。Pico W を中央の溝をまたぐように差すと、各ピンが別々の縦の列につながる。その列の空いた穴にワイヤーを差せば、そのピンにつながる。
 
-このリポジトリの配線図と配線表は、どれも次の向きと数え方で書いている。
+このリポジトリの配線図と配線表は、どれも次の向きと番号で書いている。
 
 - Pico W は、USB 端子を左、部品面（チップやボタンがある面）を上にして差す。
-- ピンは、上側の列を USB 側から 1, 2, 3 … と数える。この「順番」n のピンは、物理ピン番号 41 − n に当たる（順番 1 が物理ピン番号 40 の VBUS）。
-
-各ピンの名前と機能は、公式のピン配置図（[Pico W Pinout](https://datasheets.raspberrypi.com/picow/PicoW-A4-Pinout.pdf)）で確かめられる。
+- ピンは物理ピン番号（1〜40）で示す。配線図では、Pico W の基板の内側に各ピンの番号を書いている。番号とピンの名前の対応は「[Pico W のピン](#pico-w-のピン)」にまとめた。
 
 配線は、USB ケーブルを抜いた状態で行う。
+
+## Pico W のピン
+
+![Raspberry Pi Pico W のピン配置図。各ピンの物理ピン番号、名前、使える機能を示す](images/picow-pinout.svg)
+
+図：Raspberry Pi Ltd「Pico W pinout」（[raspberrypi/documentation](https://github.com/raspberrypi/documentation/blob/master/documentation/asciidoc/microcontrollers/pico-series/images/picow-pinout.svg)）、[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。改変していない。
+
+各ピンの横の灰色の枠の数字が物理ピン番号、色の付いた枠がそのピンで使える機能である。この図は USB 端子が上なので、反時計回りに 90 度回すと、このリポジトリの配線図と同じ向き（USB 端子が左）になる。そのとき、物理ピン番号は下側の列が左から 1〜20、上側の列が右から 21〜40 と並ぶ。
+
+- プログラムでは、物理ピン番号ではなく GP の後の番号を使う。例えば、9 番ピン（GP6）は `Pin(6)` と書く。
+- I2C と SPI は、図の組み合わせのピンでだけ使える。例えば `I2C(1, ...)` の SDA には、図で「I2C1 SDA」とあるピン（GP2、GP6、GP10 など）を使う。
+- SPI の TX は、部品側の SDA（MOSI）につなぐピンである。
+
+GP の付かないピンの役割は次のとおり。各ピンの説明は、キットの解説の [Pico W のページ](https://docs.sunfounder.com/projects/kepler-kit/ja/latest/introduction_to_pico_w.html) にもある。
+
+| 名前 | 物理ピン番号 | 役割 |
+|---|---|---|
+| VBUS | 40 | USB から受け取った 5 V が出る |
+| VSYS | 39 | Pico W の電源の入力（1.8〜5.5 V）。USB を使わずに電池などで動かすときにつなぐ |
+| 3V3(OUT) | 36 | 3.3 V の出力。部品の電源に使う |
+| 3V3_EN | 37 | GND につなぐと 3.3 V の電源が止まり、Pico W も止まる |
+| ADC_VREF | 35 | ADC（アナログ入力）の基準電圧 |
+| AGND | 33 | ADC 用のグラウンド |
+| RUN | 30 | GND につなぐと Pico W がリセットされる |
+| GND | 3、8、13、18、23、28、38 | グラウンド（0 V）。どれを使ってもよい |
