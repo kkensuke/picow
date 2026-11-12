@@ -77,7 +77,7 @@ Pico W に保存するには、「ファイル」→「名前を付けて保存�
 
 ![Raspberry Pi Pico W のピン配置図。各ピンの物理ピン番号、名前、使える機能を示す](images/picow-pinout.svg)
 
-図：Raspberry Pi Ltd「Pico W pinout」（[raspberrypi/documentation](https://github.com/raspberrypi/documentation/blob/master/documentation/asciidoc/microcontrollers/pico-series/images/picow-pinout.svg)）、[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。改変していない。
+図：Raspberry Pi Ltd「Pico W pinout」（[raspberrypi/documentation](https://github.com/raspberrypi/documentation/blob/master/documentation/asciidoc/microcontrollers/pico-series/images/picow-pinout.svg)）、[CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)。
 
 各ピンの横の灰色の枠の数字が物理ピン番号、色の付いた枠がそのピンで使える機能である。この図は USB 端子が上なので、反時計回りに 90 度回すと、このリポジトリの配線図と同じ向き（USB 端子が左）になる。そのとき、物理ピン番号は下側の列が左から 1〜20、上側の列が右から 21〜40 と並ぶ。
 
