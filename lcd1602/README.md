@@ -61,7 +61,7 @@ USB ケーブルを抜いた状態で、次の 2 段階でつなぐ。Pico W は
 |---|---|
 | `ImportError: no module named 'lcd1602'` | [ライブラリ](#ライブラリを保存する)を Pico W に保存したか |
 | `ImportError: no module named 'config'` | プロジェクトの README の手順で、`config.py` を Pico W に保存したか |
-| `Exception: No LCD found` | SDA・SCL・VCC・GND の配線。SDA と SCL が入れ替わっていないか |
+| `Exception: No LCD found` | SDA・SCL・VCC・GND の配線。SDA と SCL が入れ替わっていないか。Pico W のピンがブレッドボードの奥まで差さっているか（浅いと、バックライトは光っても SDA と SCL がつながらないことがある） |
 | 実行中に `OSError: [Errno 5] EIO` が出る | ワイヤーのゆるみ |
 | バックライトは光るが文字が見えない、または四角いブロックが並ぶ | 裏の青いつまみ（コントラスト）を、小さなドライバーで回す |
 | バックライトが光らない | VCC と GND の配線と、I2C 基板のバックライトのジャンパー（2 本のピンにかぶせる小さな部品）が付いているか |
