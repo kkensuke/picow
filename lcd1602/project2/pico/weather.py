@@ -20,6 +20,7 @@ lcd = LCD(I2C(1, sda=Pin(6), scl=Pin(7), freq=100000))  # 液晶の基板の I2C
 network.country("JP")  # 日本で使える Wi-Fi のチャンネル（12、13）にもつなぐため
 wlan = network.WLAN(network.STA_IF)
 wlan.active(True)
+wlan.config(pm=0xa11140)  # 省電力をオフにする。オンのままだと、iPhone のテザリングに接続できないことがある
 
 
 def show(line1, line2):

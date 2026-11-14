@@ -27,6 +27,7 @@ def connect():
     network.country("JP")  # 日本で使える Wi-Fi のチャンネル（12、13）にもつなぐため
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
+    wlan.config(pm=0xa11140)  # 省電力をオフにする。オンのままだと、iPhone のテザリングに接続できないことがある
     wlan.connect(config.SSID, config.PASSWORD)
     for _ in range(20):  # 最大 20 秒待つ
         if wlan.isconnected() or wlan.status() < 0:
