@@ -2,6 +2,10 @@
 
 Raspberry Pi Pico W を Wi-Fi につなぎ、天気予報サービス OpenWeatherMap から指定した地点の現在の天気を受け取って、I2C LCD1602 に表示する。表示は 10 分ごとに更新する。SunFounder Kepler Kit の例 `iot/4_weather.py` を元にしている（[キットの例との違い](#キットの例との違い)）。
 
+![液晶の表示の例。1 行目は「09:40 Clouds」、2 行目は「12.3°C 65%」](images/display.svg)
+
+図：天気の表示の例。1 行目はデータの時刻と天気、2 行目は気温と湿度。各部分の意味は「[表示の見方](#表示の見方)」にまとめた。
+
 ## 準備
 
 初めての場合は、先に次の 5 つを済ませる。
@@ -21,6 +25,8 @@ Raspberry Pi Pico W を Wi-Fi につなぎ、天気予報サービス OpenWeathe
 ```
 project2/
 ├── README.md
+├── images/
+│   └── display.svg # 液晶の表示の例
 └── pico/
     ├── weather.py  # Pico W で実行するスクリプト
     └── config.py   # Wi-Fi、API キー、地点の設定（Pico W に保存してから書き換える）

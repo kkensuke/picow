@@ -2,6 +2,10 @@
 
 Raspberry Pi Pico W を Wi-Fi につなぎ、インターネットの時刻（NTP）で内蔵の時計を合わせて、I2C LCD1602 に日本時間の日付と時刻を表示する。起動時には、Wi-Fi のルーターから割り当てられた Pico W の IP アドレスを 3 秒間表示する。
 
+![液晶の表示の例。1 行目は「2026-11-12 Thu」、2 行目は「03:06:12」](images/display.svg)
+
+図：時計の表示の例。1 行目は日付と曜日、2 行目は時刻。
+
 ## 準備
 
 初めての場合は、先に次の 3 つを済ませる。
@@ -15,6 +19,8 @@ Raspberry Pi Pico W を Wi-Fi につなぎ、インターネットの時刻（NT
 ```
 project1/
 ├── README.md
+├── images/
+│   └── display.svg # 液晶の表示の例
 └── pico/
     ├── clock.py    # Pico W で実行するスクリプト
     └── config.py   # Wi-Fi の名前とパスワード（Pico W に保存してから書き換える）
