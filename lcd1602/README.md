@@ -8,6 +8,7 @@
 |---|---|
 | [project1](project1/) | Wi-Fi で時刻を合わせる時計 |
 | [project2](project2/) | OpenWeatherMap の天気表示 |
+| [project3](project3/) | 室温と湿度も表示する時計（温湿度センサー DHT11 も使う） |
 
 ## 必要なもの
 
