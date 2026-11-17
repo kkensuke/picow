@@ -57,7 +57,7 @@ MicroPython にも `dht` という名前のモジュールが組み込まれて�
 ## ファイル構成
 
 ```
-project3/
+project2/
 ├── README.md
 ├── images/
 │   ├── display.svg     # 液晶の表示の例
