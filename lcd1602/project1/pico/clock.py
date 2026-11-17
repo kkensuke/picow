@@ -39,10 +39,13 @@ def connect():
 
 
 def lines(t):
-    return "{}-{:02d}-{:02d} {}".format(t[0], t[1], t[2], WEEK[t[6]]), "{:02d}:{:02d}:{:02d}".format(t[3], t[4], t[5])
+    return (
+        " {}-{:02d}-{:02d} {}".format(t[0], t[1], t[2], WEEK[t[6]]),  # 曜日の右には、show() が空白を 1 つ足す
+        "   {:02d}:{:02d}:{:02d}".format(t[3], t[4], t[5]),  # 時刻の「:」を、日付の「-」と同じ 6 文字目と 9 文字目にそろえる
+    )
 
 
-assert lines(time.gmtime(1794420000 + JST)) == ("2026-11-12 Thu", "03:00:00")  # UTC の 11 月 11 日 18 時が、日本時間では翌日になる
+assert lines(time.gmtime(1794420000 + JST)) == (" 2026-11-12 Thu", "   03:00:00")  # UTC の 11 月 11 日 18 時が、日本時間では翌日になる
 
 show("Wi-Fi...", config.SSID)
 try:
