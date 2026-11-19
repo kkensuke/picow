@@ -28,7 +28,7 @@ spi = SPI(0, baudrate=15000000, sck=Pin(18), mosi=Pin(19))  # ST7735 の書き�
 cs = Pin(17, Pin.OUT, value=1)
 dc = Pin(20, Pin.OUT, value=0)
 rst = Pin(21, Pin.OUT, value=1)
-sensor = DHT11(Pin(22, Pin.IN))
+sensor = DHT11(Pin(16, Pin.IN))  # GP16 は SPI(0) が受信用（MISO）に割り当てるが、液晶からは受信しないので、普通の入力ピンに戻して使う
 
 
 def cmd(c, data=b""):
