@@ -18,28 +18,42 @@ Raspberry Pi Pico W を Wi-Fi につなぎ、インターネットの時刻（NT
 
 ## DHT11 の配線
 
-DHT11 は、温度と湿度を測ってデジタル信号で送るセンサーである。SunFounder Kepler Kit の DHT11 は、3 本のピン（VCC、GND、DATA）が付いた約 2 cm 角の基板になっている（[キットの解説](https://docs.sunfounder.com/projects/kepler-kit/ja/latest/component/component_humiture.html)）。
+DHT11 は、温度と湿度を測ってデジタル信号で送るセンサーである。SunFounder Kepler Kit の DHT11 は、穴の開いた青い本体から 4 本のピンが出た部品で、そのうち 3 本（VCC、DATA、GND）を使う（[キットの解説](https://docs.sunfounder.com/projects/kepler-kit/ja/latest/component/component_humiture.html)）。
 
 LCD1602 の配線に加えて、次のものを使う。
 
-- DHT11（Kepler Kit に入っている基板のもの）
+- DHT11（Kepler Kit に入っているもの）
 - ジャンパーワイヤー（オス‐メス）3 本
 
-USB ケーブルを抜いた状態で、LCD1602 の配線はそのままにして、DHT11 をつなぐ。
+USB ケーブルを抜いた状態で、LCD1602 の配線はそのままにして、次の 2 段階で DHT11 をつなぐ。
+
+### 1. Pico W 側
 
 ![Pico W 側のワイヤーの差し込み位置。液晶の 4 本は薄く、DHT11 の 3 本は濃く示す](images/wiring.svg)
 
 図：Pico W 側のワイヤーの差し込み位置。濃い 3 本が DHT11 のワイヤーで、薄い 4 本は液晶のワイヤーである。
 
-ワイヤーの穴側（メス）を DHT11 のピンにかぶせ、ピン側（オス）を、つなぐピンと同じ縦の列の空いた穴に差す。3 本とも上側の列に差す。ピン名は DHT11 の基板に印刷されている。Pico W の基板の数字は物理ピン番号である（[Pico W のピン](../../README.md#pico-w-のピン)）。
+ワイヤーのピン側（オス）を、つなぐピンと同じ縦の列の空いた穴に差す。3 本とも上側の列に差す。Pico W の基板の数字は物理ピン番号である（[Pico W のピン](../../README.md#pico-w-のピン)）。
+
+### 2. DHT11 側
+
+![DHT11 のピンと Pico W 側の接続先。穴の開いた面を手前、ピンを下にすると、ピンは左から 1 番（VCC）、2 番（DATA）、3 番（NC）、4 番（GND）](images/dht11-pins.svg)
+
+図：DHT11 のピンと Pico W 側の接続先。黒い四角はワイヤーの穴側（メス）である。穴の並びは模式的である。
+
+DHT11 にはピン名が書かれていないので、ピンは向きで見分ける。穴の開いた面を手前に、ピンを下にして持つと、ピンは左から 1、2、3、4 番である。ワイヤーの穴側（メス）を 1、2、4 番のピンにかぶせる。3 番（NC）は中で何にもつながっていないピンなので、空けておく。
+
+### 配線表
 
 | DHT11 のピン | Pico W のピン | 物理ピン番号 |
 |---|---|---|
-| VCC | 3V3(OUT) | 36 |
-| GND | GND | 23 |
-| DATA | GP16 | 21 |
+| 1 番（VCC） | 3V3(OUT) | 36 |
+| 2 番（DATA） | GP16 | 21 |
+| 3 番（NC） | つながない | － |
+| 4 番（GND） | GND | 23 |
 
-- VCC は 3.3 V につなぐ。DHT11 の電源電圧は 3.3〜5.5 V である（Aosong の DHT11 のデータシート）。DATA の信号は VCC の電圧まで上がるため、5 V につなぐと、3.3 V 用の Pico W のピンの定格を超える。
+- VCC は 3.3 V につなぐ。DHT11 の電源電圧は 3.3〜5.5 V である（Aosong の DHT11 のデータシート）。3.3 V にすれば、DATA の電圧も、3.3 V 用の Pico W のピンの定格を超えない。
+- 抵抗は付けない。キットのライブラリ `dht.py` は、DATA を読むときに Pico W の中のプルアップ抵抗を使う。キットの配線図も、抵抗なしでつないでいる。
 - 3.3 V で使う場合、データシートはワイヤーの長さを 1 m 以下にするよう求めている。キットのジャンパーワイヤーなら足りる。
 - DATA は、キットの例 `6.2_temperature_humidity.py` と同じ GP16 にした。
 - GND は、DATA に近い 23 番ピンにした。GND のピンはどれを使ってもよい。
@@ -60,6 +74,7 @@ MicroPython にも `dht` という名前のモジュールが組み込まれて�
 project2/
 ├── README.md
 ├── images/
+│   ├── dht11-pins.svg  # DHT11 のピンと Pico W 側の接続先
 │   ├── display.svg     # 液晶の表示の例
 │   └── wiring.svg      # Pico W 側の配線図
 └── pico/
@@ -118,7 +133,7 @@ PC につながず、電源を入れるだけで動かしたい場合は、`cloc
 | 液晶の表示・症状 | 確認すること |
 |---|---|
 | `Wi-Fi failed`、`NTP failed` | project1 の「[表示がおかしいとき](../project1/README.md#表示がおかしいとき)」と同じ |
-| 温度と湿度が `--` のまま | DHT11 の 3 本の配線。特に、DATA が 21 番ピン（GP16）、VCC が 36 番ピン（3V3(OUT)）の列に差さっているか |
+| 温度と湿度が `--` のまま | DHT11 の 3 本の配線。特に、DATA が 21 番ピン（GP16）、VCC が 36 番ピン（3V3(OUT)）の列に差さっているか。DHT11 側で、ワイヤーを 3 番（NC）ではなく 1、2、4 番のピンにかぶせているか |
 | `ImportError: can't import name InvalidPulseCount` または `ImportError: no module named 'dht'` | [DHT11 のライブラリ](#dht11-のライブラリを保存する)を Pico W に保存したか。保存していないと、使い方の違う組み込みの `dht` が読み込まれるか、`dht` が見つからない |
 | 何も表示されない、ほかの `ImportError` が出る | 部品の README の「[表示されないとき](../README.md#表示されないとき)」 |
 
