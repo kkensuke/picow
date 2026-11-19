@@ -130,7 +130,10 @@ def show_clock(t, th):
     fb.rect(47, 99, 4, 4, ORANGE)  # 「°」
     fb.text("C", 53, 99, ORANGE)
     digits(hum, 107, 99, 12, 20, 3, 4, BLUE)
-    fb.text("%", 137, 99, BLUE)
+    fb.line(143, 99, 138, 104, BLUE)  # 「%」の斜線。fb.text() の「%」と同じ形
+    fb.line(143, 100, 138, 105, BLUE)
+    fb.rect(137, 99, 3, 3, BLUE)  # 「%」の丸。fb.text() の 2×2 の点を、中が空いた 3×3 の輪にする
+    fb.rect(142, 104, 3, 3, BLUE)
     cmd(0x2C, buf)
 
 
