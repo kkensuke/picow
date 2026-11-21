@@ -20,10 +20,10 @@ Raspberry Pi Pico W を Wi-Fi につなぎ、インターネットの時刻（NT
 project1/
 ├── README.md
 ├── images/
-│   └── display.svg # 液晶の表示の例
+│   └── display.svg       # 液晶の表示の例
 └── pico/
-    ├── clock.py    # Pico W で実行するスクリプト
-    └── config.py   # Wi-Fi の名前とパスワード（Pico W に保存してから書き換える）
+    ├── clock_lcd1602.py  # Pico W で実行するスクリプト
+    └── config.py         # Wi-Fi の名前とパスワード（Pico W に保存してから書き換える）
 ```
 
 ## 使い方
@@ -39,7 +39,7 @@ project1/
 
 ### 毎回：時計を動かす
 
-1. Thonny で `pico/clock.py` を開き、実行ボタン（F5）を押す。
+1. Thonny で `pico/clock_lcd1602.py` を開き、実行ボタン（F5）を押す。
 2. 液晶の表示は、次の順に変わる。
 
    | 1 行目 | 2 行目 | 状態 |
@@ -51,7 +51,7 @@ project1/
 
 3. 止めるときは停止ボタンを押す。
 
-PC につながず、電源を入れるだけで動かしたい場合は、`clock.py` を「ファイル」→「名前を付けて保存」で「Raspberry Pi Pico」を選び、`main.py` という名前で保存する。この場合も、`lcd1602.py` と `config.py` は Pico W に保存しておく。
+PC につながず、電源を入れるだけで動かしたい場合は、`clock_lcd1602.py` を「ファイル」→「名前を付けて保存」で「Raspberry Pi Pico」を選び、`main.py` という名前で保存する。この場合も、`lcd1602.py` と `config.py` は Pico W に保存しておく。
 
 ## 表示がおかしいとき
 
@@ -65,8 +65,8 @@ PC につながず、電源を入れるだけで動かしたい場合は、`cloc
 
 ## 仕組み
 
-- `ntptime.settime()` は、NTP サーバー（`pool.ntp.org`）から受け取った時刻を、Pico W の内蔵の時計に UTC で書き込む。`clock.py` は、その時刻に 9 時間（`JST`）足して日本時間を表示する。
+- `ntptime.settime()` は、NTP サーバー（`pool.ntp.org`）から受け取った時刻を、Pico W の内蔵の時計に UTC で書き込む。`clock_lcd1602.py` は、その時刻に 9 時間（`JST`）足して日本時間を表示する。
 - 内蔵の時計は少しずつずれるため、1 時間ごとに NTP で合わせ直す。合わせ直しに失敗しても、内蔵の時計で表示を続ける。
 - 時刻を合わせるときに 1 秒未満を切り捨てるため、表示は最大で 1 秒ほど遅れる。
 - Wi-Fi チップの省電力をオンのままにすると、iPhone のテザリングに接続できないことがあるため、`connect()` で省電力をオフにしている（`wlan.config(pm=0xa11140)`）。
-- 日本以外で使う場合は、`clock.py` の `JST` を UTC からのずれ（秒）に、`network.country("JP")` をその国の 2 文字の国名コードに変える。
+- 日本以外で使う場合は、`clock_lcd1602.py` の `JST` を UTC からのずれ（秒）に、`network.country("JP")` をその国の 2 文字の国名コードに変える。
