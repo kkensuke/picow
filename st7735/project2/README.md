@@ -27,13 +27,13 @@ project2/
 
 1. Pico W を USB で PC につなぎ、Thonny を開く。
 2. Thonny の右下で「MicroPython (Raspberry Pi Pico)」を選ぶ。
-3. `pico/screen_rx.py` を開き、「ファイル」→「名前を付けて保存」で「Raspberry Pi Pico」を選び、`main.py` という名前で保存する。
+3. [`pico/screen_rx.py`](pico/screen_rx.py) を開き、「ファイル」→「名前を付けて保存」で「Raspberry Pi Pico」を選び、`main.py` という名前で保存する。
 
 ### 毎回：画面を映す
 
 1. Thonny を閉じる。Thonny が USB の接続を使ったままだと、PC 側のスクリプトがつながらない。
 2. Pico W の USB ケーブルを抜いて挿し直す。液晶が真っ黒になれば、受信を待っている状態である。
-3. PC 側のスクリプトを実行する。
+3. PC 側のスクリプト [`pc/screen_tx.py`](pc/screen_tx.py) を実行する。
 
    ```
    cd pc
@@ -64,7 +64,7 @@ Ctrl-C が効くのは、Pico W が `F` を待っている間だけである。�
 
 - 何も映らない場合は、配線が原因のことが多い。「[表示されないとき](../README.md#表示されないとき)」を見る。
 - macOS では、初回にターミナルへ「画面収録」の許可を与える必要がある。許可しないと、壁紙しか映らない。
-- 上下が逆さに映る場合は、`screen_rx.py` の `b"\xA0"` を `b"\x60"` に変える。
+- 上下が逆さに映る場合は、[`screen_rx.py`](pico/screen_rx.py) の `b"\xA0"` を `b"\x60"` に変える。
 - PC の画面を幅 160 ピクセルまで縮めるため、文字はほとんど読めない。
 - 1 コマの受信の途中で PC 側が止まると、Pico W は固まる。USB を挿し直せば戻る。
 - 1 秒あたりのコマ数は計測していない。液晶への転送だけで 1 コマあたり約 26 ms かかり、これに USB での受信時間が加わる。

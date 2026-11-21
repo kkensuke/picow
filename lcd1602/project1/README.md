@@ -32,14 +32,14 @@ project1/
 
 1. Pico W を USB で PC につなぎ、Thonny を開く。
 2. Thonny の右下で「MicroPython (Raspberry Pi Pico)」を選ぶ。
-3. `pico/config.py` を開き、書き換える前に「ファイル」→「名前を付けて保存」で「Raspberry Pi Pico」を選び、`config.py` という名前で保存する。
+3. [`pico/config.py`](pico/config.py) を開き、書き換える前に「ファイル」→「名前を付けて保存」で「Raspberry Pi Pico」を選び、`config.py` という名前で保存する。
 4. タブの名前が `[ config.py ]` のように角かっこ付きになり、Pico W 上のファイルを開いた状態になる。ここで `SSID` と `PASSWORD` の値を書き換え、保存する（Ctrl+S）。
 
 リポジトリの `pico/config.py` は書き換えず、Pico W に保存した `config.py` だけにパスワードを書き込む。リポジトリのファイルに書き込むと、誤ってコミットしたときにパスワードが公開されてしまう。
 
 ### 毎回：時計を動かす
 
-1. Thonny で `pico/clock_lcd1602.py` を開き、実行ボタン（F5）を押す。
+1. Thonny で [`pico/clock_lcd1602.py`](pico/clock_lcd1602.py) を開き、実行ボタン（F5）を押す。
 2. 液晶の表示は、次の順に変わる。
 
    | 1 行目 | 2 行目 | 状態 |
@@ -65,7 +65,7 @@ PC につながず、電源を入れるだけで動かしたい場合は、`cloc
 
 ## 仕組み
 
-- `ntptime.settime()` は、NTP サーバー（`pool.ntp.org`）から受け取った時刻を、Pico W の内蔵の時計に UTC で書き込む。`clock_lcd1602.py` は、その時刻に 9 時間（`JST`）足して日本時間を表示する。
+- `ntptime.settime()` は、NTP サーバー（`pool.ntp.org`）から受け取った時刻を、Pico W の内蔵の時計に UTC で書き込む。[`clock_lcd1602.py`](pico/clock_lcd1602.py) は、その時刻に 9 時間（`JST`）足して日本時間を表示する。
 - 内蔵の時計は少しずつずれるため、1 時間ごとに NTP で合わせ直す。合わせ直しに失敗しても、内蔵の時計で表示を続ける。
 - 時刻を合わせるときに 1 秒未満を切り捨てるため、表示は最大で 1 秒ほど遅れる。
 - Wi-Fi チップの省電力をオンのままにすると、iPhone のテザリングに接続できないことがあるため、`connect()` で省電力をオフにしている（`wlan.config(pm=0xa11140)`）。
