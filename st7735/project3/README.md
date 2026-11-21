@@ -63,9 +63,9 @@ DHT11 にはピン名が書かれていないので、ピンは向きで見分�
 DHT11 の 3 番（NC）には何もつながない。液晶のほかの 7 本は、[ST7735 の配線表](../README.md#配線表)のままである。
 
 - VCC は 3.3 V につなぐ。DHT11 の電源電圧は 3.3〜5.5 V である（Aosong の DHT11 のデータシート）。3.3 V にすれば、DATA の電圧も、3.3 V 用の Pico W のピンの定格を超えない。
-- 抵抗は付けない。キットのライブラリ `dht.py` は、DATA を読むときに Pico W の中のプルアップ抵抗を使う。
+- 抵抗は付けない。キットのライブラリ [`dht.py`](https://github.com/sunfounder/kepler-kit/blob/main/libs/dht.py) は、DATA を読むときに Pico W の中のプルアップ抵抗を使う。
 - 3.3 V で使う場合、データシートはワイヤーの長さを 1 m 以下にするよう求めている。キットのジャンパーワイヤーなら足りる。
-- DATA は、キットの例 `6.2_temperature_humidity.py` や LCD1602 版と同じ GP16 にした。GP16 は、MicroPython の `SPI(0, ...)` が MISO（部品から Pico W へデータを送る線）に割り当てるピンでもある。液晶からはデータを受け取らないので、スクリプトで普通の入力ピンに設定し直して使う。
+- DATA は、キットの例 [`6.2_temperature_humidity.py`](https://github.com/sunfounder/kepler-kit/blob/main/micropython/6.2_temperature_humidity.py) や LCD1602 版と同じ GP16 にした。GP16 は、MicroPython の `SPI(0, ...)` が MISO（部品から Pico W へデータを送る線）に割り当てるピンでもある。液晶からはデータを受け取らないので、スクリプトで普通の入力ピンに設定し直して使う。
 - GND は、LCD1602 版と同じ 23 番ピンにした。GND のピンはどれを使ってもよい。
 
 ## DHT11 のライブラリを保存する

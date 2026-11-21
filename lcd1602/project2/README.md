@@ -53,9 +53,9 @@ DHT11 にはピン名が書かれていないので、ピンは向きで見分�
 | 4 番（GND） | GND | 23 |
 
 - VCC は 3.3 V につなぐ。DHT11 の電源電圧は 3.3〜5.5 V である（Aosong の DHT11 のデータシート）。3.3 V にすれば、DATA の電圧も、3.3 V 用の Pico W のピンの定格を超えない。
-- 抵抗は付けない。キットのライブラリ `dht.py` は、DATA を読むときに Pico W の中のプルアップ抵抗を使う。キットの配線図も、抵抗なしでつないでいる。
+- 抵抗は付けない。キットのライブラリ [`dht.py`](https://github.com/sunfounder/kepler-kit/blob/main/libs/dht.py) は、DATA を読むときに Pico W の中のプルアップ抵抗を使う。キットの配線図も、抵抗なしでつないでいる。
 - 3.3 V で使う場合、データシートはワイヤーの長さを 1 m 以下にするよう求めている。キットのジャンパーワイヤーなら足りる。
-- DATA は、キットの例 `6.2_temperature_humidity.py` と同じ GP16 にした。
+- DATA は、キットの例 [`6.2_temperature_humidity.py`](https://github.com/sunfounder/kepler-kit/blob/main/micropython/6.2_temperature_humidity.py) と同じ GP16 にした。
 - GND は、DATA に近い 23 番ピンにした。GND のピンはどれを使ってもよい。
 
 ## DHT11 のライブラリを保存する
@@ -140,7 +140,7 @@ PC につながず、電源を入れるだけで動かしたい場合は、`cloc
 ## 仕組み
 
 - 時計の部分（NTP で時刻を合わせる、1 時間ごとに合わせ直す、Wi-Fi チップの省電力をオフにする）は、[project1 の仕組み](../project1/README.md#仕組み)と同じである。
-- DHT11 は 1 秒に 1 回までしか測れない（DHT11 のデータシート）ため、5 秒ごとに測る。キットの `dht.py` の `measure()` は、失敗すると 5 回まで測り直し、それでも失敗するとエラー `InvalidPulseCount` を出す。このときは前の値を表示し続け、最後に測れてから 60 秒たったら `--` にする。
+- DHT11 は 1 秒に 1 回までしか測れない（DHT11 のデータシート）ため、5 秒ごとに測る。キットの [`dht.py`](https://github.com/sunfounder/kepler-kit/blob/main/libs/dht.py) の `measure()` は、失敗すると 5 回まで測り直し、それでも失敗するとエラー `InvalidPulseCount` を出す。このときは前の値を表示し続け、最後に測れてから 60 秒たったら `--` にする。
 - 温度と湿度は、`dht.py` が返す値を四捨五入して整数にする。
 - 2 行とも 16 文字に収めるため、年を下 2 桁、曜日を 2 文字にした。
 - LCD1602 には、自分で作った文字を 8 個まで登録できる。登録先を CGRAM と呼ぶ。起動時に「℃」を 0 番、「%」を 1 番に登録し、文字列の中では `"\x00"` と `"\x01"` と書く。
