@@ -43,7 +43,7 @@ USB ケーブルを抜いた状態で、次の 2 段階でつなぐ。Pico W は
 
 - VCC は 5 V につなぐ。VBUS は、USB から受け取った 5 V が出るピンである。
 - 液晶の I2C 基板は、SDA と SCL を抵抗で 5 V に引き上げて（プルアップして）いる。Pico W のピンは 3.3 V 用なので厳密には定格を超えるが、キットの例もこの配線で動かしている。
-- SDA と SCL は、キットの例と同じ GP6 と GP7 にした。キットの LCD1602 の例も、この配線のまま動く。
+- SDA と SCL は、キットの例 [`3.4_liquid_crystal_display.py`](https://github.com/sunfounder/kepler-kit/blob/main/micropython/3.4_liquid_crystal_display.py) と同じ GP6 と GP7 にした。キットの LCD1602 の例も、この配線のまま動く。
 
 ## ライブラリを保存する
 
