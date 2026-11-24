@@ -48,7 +48,7 @@ shown = [None] * 4  # 液晶に今表示している各行の文字列
 def show(*lines):
     lines += ("",) * (4 - len(lines))  # 指定しなかった行は空白にする
     for row, line in enumerate(lines):
-        line = "{:<20}".format(line[:20])  # 前の表示が残らないよう、20 文字まで空白で埋める
+        line = "{:<20}".format(" " + line[:19])  # 左端を 1 文字あけ、前の表示が残らないよう 20 文字まで空白で埋める
         if line != shown[row]:  # 1 文字の書き込みに約 5 ms かかるため、変わった行だけ書き直す
             lcd.send_command(0x80 | ROW_ADDR[row])  # キットの write() は 16 × 2 文字の範囲にしか書けないため、番地を直接指定する
             for c in line:
@@ -128,19 +128,20 @@ def lines(t, th, pa, fc):
     weather, pops = fc or ({}, {})
     temp, hum = ("{:2d}".format(th[0]), "{:2d}".format(th[1])) if th else ("--", "--")
     return (
-        "{} {}   {}{}".format(today, WEEK[t[6]], temp, DEG_C),
-        "  {:02d}:{:02d}:{:02d}       {}{}".format(t[3], t[4], t[5], hum, PERCENT),  # 「:」を日付の「-」と同じ列にそろえる
-        "{:<6}{:>11}hPa".format(WEATHER.get((weather.get(today) or "-")[0], "--"), "{:.1f}".format(pa / 100) if pa else "--"),
-        "{}  {}{}".format(UMBRELLA, "".join("{:>4}".format(pops.get("{}T{:02d}".format(today, h)) or "--") for h in (0, 6, 12, 18)), PERCENT),  # 今日の 0、6、12、18 時からの 6 時間
+        "{} {}  {}{}".format(today, WEEK[t[6]], temp, DEG_C),
+        "{:02d}:{:02d}:{:02d} {}     {}{}".format((t[3] - 1) % 12 + 1, t[4], t[5], "AM" if t[3] < 12 else "PM", hum, PERCENT),  # 12 時間制。0 時と 12 時は 12 と表示する
+        "{:<6}{:>10}hPa".format(WEATHER.get((weather.get(today) or "-")[0], "--"), "{:.1f}".format(pa / 100) if pa else "--"),
+        "{} {}{}".format(UMBRELLA, "".join("{:>4}".format(pops.get("{}T{:02d}".format(today, h)) or "--") for h in (0, 6, 12, 18)), PERCENT),  # 今日の 0、6、12、18 時からの 6 時間
     )
 
 
 assert pascal((408, -72, -14383, 32741, 32757, 23153, 6190, 4, -32768, -8711, 2868), 27898, 23843, 0) == 69964  # データシートの計算例
 T = time.gmtime(1794420000 + JST)  # 2026-11-12（木）03:00:00
 FC = ({"2026-11-12": "300", "2026-11-13": "101"}, {"2026-11-12T06": "100", "2026-11-12T12": "90", "2026-11-12T18": "", "2026-11-13T00": "10"})
-assert lines(T, (22, 45), 101320, FC) == ("2026-11-12 Thu   22\x00", "  03:00:00       45\x01", "Rain       1013.2hPa", "\x02    -- 100  90  --\x01")
-assert lines(T, (5, 45), 99870, FC)[0::2] == ("2026-11-12 Thu    5\x00", "Rain        998.7hPa")
-assert lines(T, None, None, None) == ("2026-11-12 Thu   --\x00", "  03:00:00       --\x01", "--             --hPa", "\x02    --  --  --  --\x01")
+assert lines(T, (22, 45), 101320, FC) == ("2026-11-12 Thu  22\x00", "03:00:00 AM     45\x01", "Rain      1013.2hPa", "\x02   -- 100  90  --\x01")
+assert lines(T, (5, 45), 99870, FC)[0::2] == ("2026-11-12 Thu   5\x00", "Rain       998.7hPa")
+assert lines(T, None, None, None) == ("2026-11-12 Thu  --\x00", "03:00:00 AM     --\x01", "--            --hPa", "\x02   --  --  --  --\x01")
+assert [lines(time.gmtime(1794420000 + JST + h * 3600), None, None, None)[1][:11] for h in (-3, 9, 12)] == ["12:00:00 AM", "12:00:00 PM", "03:00:00 PM"]
 
 try:
     CAL = struct.unpack(">hhhHHHhhhhh", bmp.readfrom_mem(BMP180, 0xAA, 22))  # 工場で BMP180 ごとに書き込まれた補正の係数
